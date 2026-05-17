@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>index</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <form method="POST">
+        <h1>Login</h1>
+        
+        {% if password %}
+            <div class="key-container">
+                <label>Password Baru Dibuat:</label>
+                <div class="key-box" id="copy-target" ondblclick="selectText('copy-target')">
+                    {{ password }}
+                </div>
+                <p style="font-size: 0.7rem; color: #f472b6; margin-top: 10px;">
+                    Simpan key ini! Box ini akan hilang setelah kamu berhasil login.
+                </p>
+            </div>
+        {% endif %}
+
+        <input name="nama" placeholder="Masukkan Fernet Key" autocomplete="off">
+        <button type="submit">Unlock</button>
+        
+        <div class="status">
+            {{status or ""}}
+        </div>
+    </form>
+    <script>
+    function selectText(containerid) {
+        const node = document.getElementById(containerid);
+        if (document.selection) {
+            const range = document.body.createTextRange();
+            range.moveToElementText(node);
+            range.select();
+        } else if (window.getSelection) {
+            const range = document.createRange();
+            range.selectNodeContents(node); 
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+        }
+    }
+    </script>
+</body>
+</html>

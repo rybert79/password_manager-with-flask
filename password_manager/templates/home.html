@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Vault - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Menghubungkan ke file CSS custom kamu -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto space-y-8">
+        <!-- HEADER -->
+        <header class="glass-card p-6 flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold bg-gradient-to-r from-sky-400 to-indigo-400 bg-clip-text text-transparent tracking-wider">CYBER VAULT</h1>
+                <p class="text-slate-500 text-xs">Secure Cryptography Manager</p>
+            </div>
+            <a href="/logout" class="btn-neon btn-pink text-xs px-4 py-2 rounded font-bold transition flex items-center gap-2">
+                <i class="fa-solid fa-power-off"></i> LOGOUT
+            </a>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- SIDEBAR: TAMBAH DATA -->
+            <aside class="lg:col-span-1">
+                <section class="glass-card p-6 sticky top-8">
+                    <h2 class="text-lg font-semibold mb-6 flex items-center gap-2 uppercase tracking-wide">
+                        <i class="fa-solid fa-plus-circle text-sky-400"></i> Tambah Data
+                    </h2>
+
+                    <form method="POST" class="space-y-4">
+                        <div>
+                            <label class="text-xs text-slate-400 block mb-2 uppercase">Aplikasi / Web</label>
+                            <input type="text" name="label" class="cyber-input" placeholder="Misal: GOOGLE" required autocomplete="off">
+                        </div>
+                        <div>
+                            <label class="text-xs text-slate-400 block mb-2 uppercase">Username</label>
+                            <input type="text" name="username" class="cyber-input" placeholder="username/email" required autocomplete="off">
+                        </div>
+                        <div>
+                            <label class="text-xs text-slate-400 block mb-2 uppercase">Password</label>
+                            <input type="password" name="password" class="cyber-input" placeholder="••••••••" required>
+                        </div>
+                        <button type="submit" class="btn-neon btn-blue w-full justify-center mt-4 text-xs font-bold py-3 rounded">
+                            SIMPAN PASSWORD
+                        </button>
+                    </form>
+                </section>
+            </aside>
+
+            <!-- MAIN CONTENT: LIST DATA VAULT -->
+            <main class="lg:col-span-2">
+                <div class="glass-card p-6 min-h-[500px]">
+                    <h2 class="text-lg font-semibold mb-6 flex items-center gap-2 uppercase tracking-wide">
+                        <i class="fa-solid fa-vault text-sky-400"></i> Brankas Password
+                    </h2>
+
+                    <div class="overflow-x-auto">
+                        <table class="data-table w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-slate-800 text-slate-400 text-xs uppercase tracking-wider">
+                                    <th class="py-3 px-4">Aplikasi</th>
+                                    <th class="py-3 px-4">Username</th>
+                                    <th class="py-3 px-4">Password</th>
+                                    <th class="py-3 px-4">Dibuat</th>
+                                    <th class="py-3 px-4 text-right">Aksi</th>
+                                </tr>
+                             trot>
+                            <tbody>
+                                {% if data and data['teks'] %}
+                                    {% for item in data['teks'] %}
+                                        <tr class="data-row border-b border-slate-900/50 hover:bg-slate-900/30 transition">
+                                            <td class="py-4 px-4 font-bold text-sky-400">{{ item.label }}</td>
+                                            <td class="py-4 px-4 text-slate-300">{{ item.username }}</td>
+                                            <td class="py-4 px-4 pass-font">
+                                                <div class="flex items-center gap-2">
+                                                    <span id="pass-{{ loop.index0 }}" class="font-mono text-sm tracking-wider">••••••••</span>
+                                                    <button type="button" onclick="togglePass('{{ loop.index0 }}', '{{ item.password }}')" class="text-slate-500 hover:text-white transition">
+                                                        <i class="fa-solid fa-eye text-xs"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                            <td class="py-4 px-4 text-xs text-slate-500">{{ item.created }}</td>
+                                            <td class="py-4 px-4 text-right space-x-3">
+                                                <!-- Tombol Edit: Membuka Modal JavaScript -->
+                                                <button type="button" class="text-yellow-500 hover:text-yellow-400 text-sm transition" 
+                                                        onclick="openModal('{{ loop.index0 }}', '{{ item.label }}', '{{ item.username }}', '{{ item.password }}')" 
+                                                        title="Ubah Data">
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                </button>
+                                                
+                                                <!-- Tombol Hapus: Mengarah langsung ke Flask route -->
+                                                <a href="/delete/{{ loop.index0 }}" 
+                                                   class="text-pink-500 hover:text-pink-400 text-sm transition inline-block" 
+                                                   onclick="return confirm('Apakah kamu yakin ingin menghapus data {{ item.label }}?')"
+                                                   title="Hapus Data">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr class="data-row">
+                                        <td colspan="5" class="text-center py-20 text-slate-500 italic text-sm">
+                                            <i class="fa-solid fa-folder-open block text-2xl mb-2 text-slate-700"></i>
+                                            Belum ada data yang tersimpan di dalam vault.
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- MODAL EDIT DATA (Mulai tersembunyi dengan class 'hidden') -->
+    <div id="editModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4 transition-all">
+        <div class="glass-card w-full max-w-md p-6 space-y-6 relative border border-yellow-500/30 shadow-[0_0_50px_rgba(234,179,8,0.15)]">
+            
+            <!-- Header Modal -->
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h2 class="text-lg font-bold bg-gradient-to-r from-yellow-400 to-amber-500 bg-clip-text text-transparent uppercase tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-pen-to-square text-yellow-500"></i> Ubah Data Vault
+                </h2>
+                <button type="button" onclick="closeModal()" class="text-slate-400 hover:text-white transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Form Edit -->
+            <form id="editForm" method="POST" action="/edit" class="space-y-4">
+                <!-- Input hidden untuk melempar index item ke backend Flask -->
+                <input type="hidden" name="index" id="edit-index">
+                
+                <div>
+                    <label class="text-xs text-slate-400 block mb-2 uppercase tracking-wide">Nama Aplikasi / Web</label>
+                    <input type="text" name="label" id="edit-label" class="cyber-input" required autocomplete="off">
+                </div>
+                <div>
+                    <label class="text-xs text-slate-400 block mb-2 uppercase tracking-wide">Username</label>
+                    <input type="text" name="username" id="edit-username" class="cyber-input" required autocomplete="off">
+                </div>
+                <div>
+                    <label class="text-xs text-slate-400 block mb-2 uppercase tracking-wide">Password Baru</label>
+                    <input type="text" name="password" id="edit-password" class="cyber-input" required autocomplete="off">
+                </div>
+                
+                <!-- Tombol Aksi Modal -->
+                <div class="flex justify-end gap-3 pt-4 border-t border-slate-800">
+                    <button type="button" class="px-4 py-2 border border-slate-700 rounded text-slate-400 hover:bg-slate-800 hover:text-white transition text-xs uppercase font-semibold" onclick="closeModal()">
+                        Batal
+                    </button>
+                    <button type="submit" class="btn-neon btn-blue text-xs font-bold px-5 py-2 rounded">
+                        Simpan Perubahan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Fungsi Sembunyi / Tampilkan Password di Tabel Utama
+        function togglePass(id, actualPass) {
+            const span = document.getElementById('pass-' + id);
+            if (span.innerText === '••••••••') {
+                span.innerText = actualPass;
+                span.classList.add('text-green-400');
+            } else {
+                span.innerText = '••••••••';
+                span.classList.remove('text-green-400');
+            }
+        }
+
+        // Fungsi Membuka Modal & Mengisi Data Otomatis
+        function openModal(index, label, username, password) {
+            const modal = document.getElementById('editModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            // Inject nilai lama ke dalam field form modal
+            document.getElementById('edit-index').value = index;
+            document.getElementById('edit-label').value = label;
+            document.getElementById('edit-username').value = username;
+            document.getElementById('edit-password').value = password;
+        }
+
+        // Fungsi Menutup Modal
+        function closeModal() {
+            const modal = document.getElementById('editModal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
