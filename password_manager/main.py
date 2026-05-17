@@ -111,11 +111,9 @@ def edit_data():
         
     idx = int(request.form["index"])
     
-    # Update data berdasarkan lookup dictionary mirip CLI kamu dulu
     data["teks"][idx]["label"] = request.form["label"].upper()
     data["teks"][idx]["username"] = request.form["username"]
     data["teks"][idx]["password"] = enkrip(request.form["password"])
-    # Tanggal dibuat tidak perlu diubah agar tetap melacak waktu asli pembuatan
 
     return redirect("/home/")
 app.run(debug=True)
