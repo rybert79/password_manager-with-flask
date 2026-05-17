@@ -28,7 +28,7 @@
 *   **Backend:** Python, Flask Framework
 *   **Cryptography:** `cryptography.fernet`
 *   **Frontend:** HTML5, Tailwind CSS (via CDN), FontAwesome Icons
-*   **Database:** Local JSON Storage (`cryp.json` / `data.json`)
+*   **Database:** Local JSON Storage (`data.json`)
 
 ---
 
@@ -36,10 +36,3 @@
 > **Note on Syntax:** While the user interface and documentation are presented in English, the underlying backend architecture, function definitions, database keys, and variable namings are written using **Indonesian syntax** (e.g., `enkrip()`, `dekrip()`, `liatdata()`, `user_ubah`). This was intentionally structured to align with local development logic while maintaining top-tier security standards.
 
 ---
-
-## 📦 Installation & Usage
-
-### 1. Clone the Repository
-```bash
-git clone [https://github.com/your-username/cyber-vault.git](https://github.com/your-username/cyber-vault.git)
-cd cyber-vault
