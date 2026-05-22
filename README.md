@@ -5,7 +5,7 @@
 ![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-3.0+-38BDF8?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
-**Cyber Vault** is a web-based Password Manager featuring a dynamic, responsive user interface styled with a modern **Cyberpunk Glassmorphism** aesthetic. Built on top of Python's Flask framework, this application utilizes the **Fernet (Symmetric Encryption)** implementation from the `cryptography` library to guarantee that all locally stored credentials remain fully encrypted and inaccessible without the master key.
+**Cyber Vault** is a web-based Password Manager featuring a dynamic, responsive user interface styled with a modern **Glassmorphism** aesthetic. Built on top of Python's Flask framework, this application utilizes the **Fernet (Symmetric Encryption)** implementation from the `cryptography` library to guarantee that all locally stored credentials remain fully encrypted and inaccessible without the master key.
 
 ---
 
